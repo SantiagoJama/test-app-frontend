@@ -1,0 +1,144 @@
+<app-navbar [isProductComponent]="true"></app-navbar>
+<main style="height: 100vh;">
+    <section class="container-fluid">
+<p-table
+#dt1
+[value] ="products"
+dataKey="id"
+[rows]="10"
+[showCurrentPageReport]="true"
+[rowsPerPageOptions]="[10, 25, 50]"
+
+[paginator]="true"
+currentPageReportTemplate="Mostranto de 1 a  {last} entradas"
+[globalFilterFields]="[]"
+>
+<ng-template pTemplate="caption">
+    <div class="flex mb-2 me-1">
+        <span class="mr-2">Acciones</span>
+        <button type="button" class="btn btn-primary mr-2" (click)="openModalToCreateANewProduct();">Crear producto</button>
+    </div>
+</ng-template>
+
+
+
+<ng-template pTemplate="header">
+    <tr>
+        <th style="min-width:15rem">
+            <div class="flex align-items-center">
+                Nombre producto
+            </div>
+        </th>
+        <th style="min-width:15rem">
+            <div class="flex align-items-center">
+                Descripción
+            </div>
+        </th>
+        <th style="min-width:15rem">
+            <div class="flex align-items-center">
+                Precio
+            </div>
+        </th>
+        <th style="min-width:15rem">
+            <div class="flex align-items-center text-center">
+                Acción
+            </div>
+        </th>
+    </tr>
+</ng-template>
+<ng-template pTemplate="body" let-product>
+    <tr>
+        <td>
+           {{product.productname}}
+        </td>
+        <td>
+            {{product.productdescription}}
+
+        </td>
+        <td>        
+            {{product.productprice}}
+        </td>
+        <td style="text-align: center;" class="d-flex justify-content-center align-items-center">
+            <div class="d-flex flex-row justify-content-around edit-delete-device-buttons-container">
+                <button type="button" pTooltip="Permite editar el registro" tooltipPosition="top" (click)="updateSelectedProduct(product, productToBeUpdate)" class="btn btn-primary p-3 mr-1"><i class="bi bi-plus-square-fill">Editar</i></button>
+                <button type="button" pTooltip="Permite eliminar el registro" tooltipPosition="top" (click)="deleteProduct( product )" class="btn btn-primary p-3"><i class="bi bi-trash">Eliminar</i></button>
+            </div>
+        </td>
+    </tr>
+</ng-template>
+<ng-template pTemplate="emptymessage">
+    <tr>
+        <td colspan="7">No existen productos registrados.</td>
+    </tr>
+</ng-template>
+</p-table>
+    </section>
+
+
+    <!-- Para agregar un nuevo producto -->
+    <p-dialog header="Ingrese nuevo producto" [(visible)]="showCreateNewProductModal" [style]="{width: '30vw'}">
+        <form style="width: 25em;" (ngSubmit)="createNewProduct( newProduct )"  #newProduct="ngForm" autocomplete="off">
+            <div class="mb-3">
+              <label for="productName" class="form-label">Nombre producto: </label>
+              <input type="text" class="form-control" id="productName" name="productName" ngModel #productNameCheck="ngModel" placeholder="Café" required #productName>
+              <span [hidden]="productNameCheck.valid || productNameCheck.pristine " class="text-danger">Ingres el nombre del producto</span>
+            </div>
+            <div class="mb-3">
+              <label for="productDescription" class="form-label">Descripción:</label>
+              <input type="text" class="form-control" id="productDescription" name = "productDescription" #productDescriptionCheck = "ngModel" ngModel placeholder="Café ecuatoriano" required>
+              <span [hidden]="productDescriptionCheck.valid || productDescriptionCheck.pristine " class="text-danger">Ingrese descripción</span>
+            </div>
+
+            <div class="mb-3">
+                <label for="productPrice" class="form-label">Precio:</label>
+                <input type="text" class="form-control" id="productPrice" name = "productPrice" #productPriceCheck = "ngModel" ngModel placeholder="10.20" required>
+                <span [hidden]="productPriceCheck.valid || productPriceCheck.pristine " class="text-danger">Ingreso precio</span>
+              </div>
+    
+            <div class="d-flex justify-content-center align-items-end pt-3">
+                <div style="width: auto;" class="d-flex flex-row justify-content-around align-items-center">
+                    <button type="submit" class="btn btn-save-botton">Guardar</button>
+                    <button type="button" class="btn btn-danger btn-cancel-botton" (click)="closeCreateNewProductModal( newProduct );">Cancelar</button>
+                </div>
+            </div>
+          </form>
+
+    </p-dialog>
+
+
+    <!-- Para actualizar un producto -->
+    <p-dialog header="Ingrese nuevo producto" [(visible)]="showUpdateProductModal" [style]="{width: '30vw'}">
+        <form style="width: 25em;" (ngSubmit)="updateProduct( productToBeUpdate )"  #productToBeUpdate="ngForm" autocomplete="off">
+            <div class="mb-3" style="display: none;">
+                <label for="productId" class="form-label">Nombre producto: </label>
+                <input type="text" class="form-control" id="productId" name="productId" ngModel #productIdCheck="ngModel" placeholder="Café" required #productId>
+                <span [hidden]="productIdCheck.valid || productIdCheck.pristine " class="text-danger">Ingres el nombre del producto</span>
+              </div>
+            <div class="mb-3">
+              <label for="productName" class="form-label">Nombre producto: </label>
+              <input type="text" class="form-control" id="productName" name="productName" ngModel #productNameCheck="ngModel" placeholder="Café" required #productName>
+              <span [hidden]="productNameCheck.valid || productNameCheck.pristine " class="text-danger">Ingres el nombre del producto</span>
+            </div>
+            <div class="mb-3">
+              <label for="productDescription" class="form-label">Descripción:</label>
+              <input type="text" class="form-control" id="productDescription" name = "productDescription" #productDescriptionCheck = "ngModel" ngModel placeholder="Café ecuatoriano" required>
+              <span [hidden]="productDescriptionCheck.valid || productDescriptionCheck.pristine " class="text-danger">Ingrese descripción</span>
+            </div>
+
+            <div class="mb-3">
+                <label for="productPrice" class="form-label">Precio:</label>
+                <input type="text" class="form-control" id="productPrice" name = "productPrice" #productPriceCheck = "ngModel" ngModel placeholder="10.20" required>
+                <span [hidden]="productPriceCheck.valid || productPriceCheck.pristine " class="text-danger">Ingreso precio</span>
+              </div>
+   
+
+            <div class="d-flex justify-content-center align-items-end pt-3">
+                <div style="width: auto;" class="d-flex flex-row justify-content-around align-items-center">
+                    <button type="submit" class="btn btn-save-botton">Guardar</button>
+                    <button type="button" class="btn btn-danger btn-cancel-botton" (click)="closeModalToUpdateProduct( productToBeUpdate );">Cancelar</button>
+                </div>
+            </div>
+          </form>
+
+    </p-dialog>
+</main>

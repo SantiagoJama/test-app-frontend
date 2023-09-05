@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse nav-items-links-container">
+        <div class="navbar-nav">
+          <div *ngIf="isUserComponent" class="navbar-nav">
+            <div>
+              <a class="nav-link" (click)="showProduct()">Ver productos</a>
+            </div>
+            <div>
+              <a class="nav-link" (click)="showUser()">Ver usuarios</a>
+            </div>
+            <div>
+              <a class="nav-link" (click)="logout()">Salir</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+<main style="height: 100vh;">
+    <section class="container-fluid">
+<p-table
+#dt1
+[value] ="users"
+dataKey="id"
+[rows]="10"
+[showCurrentPageReport]="true"
+[rowsPerPageOptions]="[10, 25, 50]"
+
+[paginator]="true"
+currentPageReportTemplate="Mostranto de 1 a  {last} entradas"
+[globalFilterFields]="[]"
+>
+<ng-template pTemplate="caption">
+    <div class="flex mb-2 me-1">
+        <span class="mr-2">Tabla de usuarios</span>
+    </div>
+</ng-template>
+
+
+
+<ng-template pTemplate="header">
+    <tr>
+        <th style="min-width:15rem">
+            <div class="flex align-items-center tex-center">
+                Nombre de usuario
+            </div>
+        </th>
+    </tr>
+</ng-template>
+<ng-template pTemplate="body" let-usuario>
+    <tr class="tex-center">
+        <td>
+           {{usuario.username}}
+        </td>
+    </tr>
+</ng-template>
+<ng-template pTemplate="emptymessage">
+    <tr>
+        <td colspan="7">No existen usuarios registrados.</td>
+    </tr>
+</ng-template>
+</p-table>
+    </section>
+</main>
